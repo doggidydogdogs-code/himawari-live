@@ -13,7 +13,7 @@ SAVE_FOLDER = "data"
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
 # Google Drive folder ID where SATAID files will be uploaded
-GOOGLE_DRIVE_FOLDER_ID = "YOUR_FOLDER_ID_HERE"
+GOOGLE_DRIVE_FOLDER_ID = "1Rh_ACRtQC2itd8lqfoJd4a3FQOmFD9Mn"
 
 # Path to the JMA converter (adjust if needed)
 CONVERTER_PATH = "./ahi2sataid"
