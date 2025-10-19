@@ -1,1 +1,2 @@
-requests
+s3fs
+pydrive2
