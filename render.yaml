@@ -1,0 +1,7 @@
+services:
+  - type: worker
+    name: himawari-live
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: "python main.py"
