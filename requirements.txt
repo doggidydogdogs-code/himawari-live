@@ -1,2 +1,9 @@
-s3fs
-pydrive2
+numpy
+matplotlib
+requests
+# Add your satellite dependencies:
+# cartopy
+# satpy
+# pyresample
+# s3fs
+# etc.
