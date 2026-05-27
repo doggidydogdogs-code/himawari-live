@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛰️ Live Satellite Feed</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #0a0a1a; color: white; font-family: 'Courier New', monospace;
+            text-align: center; padding: 20px; min-height: 100vh;
+        }
+        h1 { color: #4CAF50; font-size: 2em; margin-bottom: 10px; }
+        .status { color: #888; margin-bottom: 20px; }
+        .grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px; max-width: 1200px; margin: 0 auto;
+        }
+        .card {
+            background: #161b22; border: 1px solid #30363d; border-radius: 12px;
+            overflow: hidden; transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-3px); }
+        .card h3 { background: #1a1a2e; padding: 12px; color: #58a6ff; }
+        .card img { width: 100%; display: block; }
+        .card p { padding: 10px; color: #8b949e; font-size: 0.8em; }
+        .footer { margin-top: 30px; color: #666; font-size: 0.8em; }
+        .footer a { color: #58a6ff; text-decoration: none; }
+        .live-dot {
+            display: inline-block; width: 10px; height: 10px;
+            background: #4CAF50; border-radius: 50%; margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🛰️ Satellite Imagery Monitor</h1>
+    <p class="status">
+        <span class="live-dot"></span>
+        Auto-updates every 10 minutes • <span id="last-refresh">Loading...</span>
+    </p>
+    
+    <div class="grid">
+        <div class="card">
+            <h3>📡 Infrared (Band 13)</h3>
+            <img id="ir-img" src="images/ir_latest.png" alt="IR Satellite"
+                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%231a1a2e%22 width=%22400%22 height=%22300%22/><text fill=%22%23888%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Loading IR data...</text></svg>'">
+            <p>Brightness Temperature • Cloud top temperatures</p>
+        </div>
+        
+        <div class="card">
+            <h3>💧 Water Vapor (Band 8)</h3>
+            <img id="wv-img" src="images/wv_latest.png" alt="Water Vapor"
+                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%231a1a2e%22 width=%22400%22 height=%22300%22/><text fill=%22%23888%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22>Loading WV data...</text></svg>'">
+            <p>Upper-level moisture • Steering patterns</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>🚀 Automated by <a href="https://railway.app" target="_blank">Railway</a> • 
+        Hosted on <a href="https://pages.github.com" target="_blank">GitHub Pages</a></p>
+        <p>Next refresh in: <span id="countdown">10:00</span></p>
+    </div>
+    
+    <script>
+        const REFRESH_INTERVAL = 600; // 10 minutes in seconds
+        
+        function refreshImages() {
+            const timestamp = Date.now();
+            document.querySelectorAll('img').forEach(img => {
+                const baseSrc = img.src.split('?')[0];
+                img.src = baseSrc + '?t=' + timestamp;
+            });
+            document.getElementById('last-refresh').textContent = 
+                'Last refresh: ' + new Date().toUTCString();
+        }
+        
+        function startCountdown(seconds) {
+            let remaining = seconds;
+            const countdownEl = document.getElementById('countdown');
+            
+            setInterval(() => {
+                const mins = Math.floor(remaining / 60);
+                const secs = remaining % 60;
+                countdownEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                remaining--;
+                if (remaining < 0) {
+                    remaining = seconds;
+                    refreshImages();
+                }
+            }, 1000);
+        }
+        
+        // Initial setup
+        document.getElementById('last-refresh').textContent = 
+            'Ready • ' + new Date().toUTCString();
+        startCountdown(REFRESH_INTERVAL);
+        refreshImages();
+    </script>
+</body>
+</html>
