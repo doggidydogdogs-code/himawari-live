@@ -13,7 +13,7 @@ import numpy as np
 # ===== CONFIGURATION =====
 GITHUB_USERNAME = "doggidydogdogs-code"
 REPO_NAME = "himawari-live"
-GITHUB_TOKEN = os.environ.get("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")  # Set in Railway variables
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")  # Set in Railway variables
 BRANCH = "main"
 
 # ===== GITHUB UPLOAD FUNCTION =====
